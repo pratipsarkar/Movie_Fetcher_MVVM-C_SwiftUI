@@ -25,7 +25,8 @@ class MovieHomeViewModel: ObservableObject {
         self.isActive = false
     }
     
-    func startFetching() {
+    // Async await way - looping while requesting
+    /* func startFetching() {
         guard isActive == false else { return }
         isActive = true
         task = Task { [weak self] in
@@ -38,6 +39,21 @@ class MovieHomeViewModel: ObservableObject {
                 } catch {
                     print("Error encountered while fetching movie: \(error)")
                 }
+            }
+        }
+    } */
+    
+    func startFetching() {
+        guard !isActive else { return }
+        isActive = true
+
+        task = Task {
+            do {
+                for try await movie in repository.movieStream() {
+                    self.movie = movie
+                }
+            } catch {
+                print("Stream error:", error)
             }
         }
     }

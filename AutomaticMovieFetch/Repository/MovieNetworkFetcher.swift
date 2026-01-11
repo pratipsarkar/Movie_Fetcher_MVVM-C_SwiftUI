@@ -8,5 +8,6 @@
 import Foundation
 
 protocol MovieNetworkFetcher {
+    func movieStream() -> AsyncThrowingStream<Movie, Error>
     func fetchRandomMovie() async throws -> Movie
 }

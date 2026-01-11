@@ -41,6 +41,30 @@ class MovieNetworkDataSource: MovieNetworkFetcher {
         return movieEntity
     }
     
+    func movieStream() -> AsyncThrowingStream<Movie, Error> {
+        AsyncThrowingStream { continuation in
+            let task = Task {
+                do {
+                    while !Task.isCancelled {
+                        let movie = try await fetchRandomMovie()
+                        continuation.yield(movie)
+
+                        try await Task.sleep(
+                            nanoseconds: 10_000_000_000
+                        )
+                    }
+                } catch {
+                    continuation.finish(throwing: error)
+                }
+            }
+
+            // Called when stream consumer cancels iteration
+            continuation.onTermination = { _ in
+                task.cancel()
+            }
+        }
+    }
+    
     private func fetchMoviePoster(posterPath: String?) async throws -> UIImage {
         guard let posterPath else {
             throw URLError(.badURL)

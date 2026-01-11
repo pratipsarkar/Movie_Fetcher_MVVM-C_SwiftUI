@@ -9,5 +9,6 @@ import Foundation
 
 protocol MovieRepository {
     func fetchRandomMovie() async throws -> Movie
+    func movieStream() -> AsyncThrowingStream<Movie, Error>
     func allMovies() -> [Movie]
 }
