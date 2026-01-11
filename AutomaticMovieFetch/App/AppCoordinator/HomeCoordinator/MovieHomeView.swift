@@ -35,7 +35,7 @@ struct MovieHomeView: View {
                     Button("Stop") { viewModel.stopFetching() }
                 }
 
-                NavigationLink("History") {
+                Button("History") {
                     viewModel.didTapOnHistory()
                 }
             }

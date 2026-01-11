@@ -9,15 +9,16 @@ import Foundation
 import SwiftUI
 
 class MovieHomeCoordinator {
-    var repository: MovieRepository
-    var viewModel: MovieHomeViewModel
+    private var repository: MovieRepository
+    private var coordinator: MovieCoordinating
     
     init(repository: MovieRepository, coordinator: MovieCoordinating) {
         self.repository = repository
-        self.viewModel = MovieHomeViewModel(repository: repository, coordinator: coordinator)
+        self.coordinator = coordinator
     }
     
     func start() -> some View {
-        return MovieHomeView(viewModel: self.viewModel)
+        let viewModel = MovieHomeViewModel(repository: repository, coordinator: coordinator)
+        return MovieHomeView(viewModel: viewModel)
     }
 }

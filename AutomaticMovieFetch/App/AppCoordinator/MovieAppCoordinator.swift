@@ -7,21 +7,22 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
-class MovieAppCoordinator: MovieCoordinator, MovieCoordinating {
-    private var repository: MovieRepository
+enum MovieRoute: Hashable {
+    case history
+}
+
+@MainActor
+class MovieAppCoordinator: ObservableObject, MovieCoordinating {
+    @Published var navigationPath = NavigationPath()
+    let repository: MovieRepository
     
     init() {
         repository = MovieRepositoryImpl(localDataSource: MovieInMemoryStore(), remoteDataSource: MovieNetworkDataSource())
     }
     
-    func start() -> AnyView {
-        let homeCoordinator = MovieHomeCoordinator(repository: repository, coordinator: self)
-        return AnyView(homeCoordinator.start())
-    }
-    
-    func didTapOnHistory() -> AnyView {
-        let historyCoordinator = MovieHistoryCoordinator(repository: repository)
-        return AnyView(historyCoordinator.start())
+    func didTapOnHistory() {
+        navigationPath.append(MovieRoute.history)
     }
 }

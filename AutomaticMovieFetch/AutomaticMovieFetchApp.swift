@@ -11,8 +11,7 @@ import SwiftUI
 struct AutomaticMovieFetchApp: App {
     var body: some Scene {
         WindowGroup {
-            let appCoordinator = MovieAppCoordinator()
-            appCoordinator.start()
+            MovieAppRootView()
         }
     }
 }

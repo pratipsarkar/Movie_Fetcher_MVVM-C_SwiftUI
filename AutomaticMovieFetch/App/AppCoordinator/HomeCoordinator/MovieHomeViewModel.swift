@@ -10,7 +10,7 @@ import Foundation
 import SwiftUI
 
 @MainActor
-class MovieHomeViewModel: ObservableObject, MovieCoordinating {
+class MovieHomeViewModel: ObservableObject {
     // Changes to these properties will result in update
     @Published var movie: Movie?
     @Published var isActive: Bool
@@ -27,6 +27,7 @@ class MovieHomeViewModel: ObservableObject, MovieCoordinating {
     
     func startFetching() {
         guard isActive == false else { return }
+        isActive = true
         task = Task { [weak self] in
             guard let self else { return }
             while !Task.isCancelled {
@@ -47,11 +48,7 @@ class MovieHomeViewModel: ObservableObject, MovieCoordinating {
         isActive = false
     }
     
-    func getAllMovies() -> [Movie] {
-        return repository.allMovies()
-    }
-    
-    func didTapOnHistory() -> AnyView {
-        return coordinator?.didTapOnHistory() ?? AnyView(EmptyView())
+    func didTapOnHistory() {
+        coordinator?.didTapOnHistory()
     }
 }

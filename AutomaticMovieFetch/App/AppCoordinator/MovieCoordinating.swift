@@ -9,5 +9,5 @@ import Foundation
 import SwiftUI
 
 protocol MovieCoordinating {
-    func didTapOnHistory() -> AnyView
+    func didTapOnHistory()
 }
