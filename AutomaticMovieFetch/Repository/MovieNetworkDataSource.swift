@@ -15,7 +15,10 @@ class MovieNetworkDataSource: MovieNetworkFetcher {
     private let urlSession = URLSession.shared
     
     func fetchRandomMovie() async throws -> Movie {
-        let urlString = "\(apiUrl)?api_key=\(apiKey)"
+        var urlString = "\(apiUrl)?api_key=\(apiKey)"
+        if let page = (1..<10).randomElement() {
+            urlString += "&page=\(page)"
+        }
         guard let url = URL(string: urlString) else {
             throw URLError(.badURL)
         }
